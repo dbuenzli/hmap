@@ -13,7 +13,7 @@
 type 'a key
 (** The type for keys whose lookup value is of type ['a]. *)
 
-(** Keys *)
+(** Keys. *)
 module Key : sig
 
   (** {1:keys Keys} *)
@@ -23,14 +23,14 @@ module Key : sig
 
   (** {1:exists Existential keys}
 
-      Exisential keys allows to compare keys which can be useful for functions
+      Exisential keys allows to compare keys. This can be useful for functions
       like {!filter}. *)
 
   type t
   (** The type for existential keys. *)
 
   val hide_type : 'a key -> t
-  (** [hide_type k] is an exisential key for [k]. *)
+  (** [hide_type k] is an existential key for [k]. *)
 
   val equal : t -> t -> bool
   (** [equal k k'] is [true] iff [k] and [k'] are the same key. *)
@@ -84,7 +84,8 @@ val for_all : (binding -> bool) -> t -> bool
 (** [for_all p m] is [true] iff all bindings of [m] satisfy [p]. *)
 
 val exists : (binding -> bool) -> t -> bool
-(** [exists p m] is [true] iff there exists a bindings of [m] satisfies [p]. *)
+(** [exists p m] is [true] iff there exists a bindings of [m] that
+    satisfies [p]. *)
 
 val filter : (binding -> bool) -> t -> t
 (** [filter p m] are the bindings of [m] that satisfy [p]. *)
@@ -119,7 +120,7 @@ module type S = sig
   type 'a key
   (** The type for keys whose lookup value is of type ['a]. *)
 
-  (** Keys *)
+  (** Keys. *)
   module Key : sig
 
     (** {1:keys Keys} *)
@@ -128,20 +129,21 @@ module type S = sig
     (** The type for key information. *)
 
     val create : 'a info -> 'a key
-    (** [create ()] is a new key. *)
+    (** [create i] is a new key with information [i]. *)
 
     val info : 'a key -> 'a info
+    (** [info k] is [k]'s information. *)
 
     (** {1:exists Existential keys}
 
-        Exisential keys allows to compare keys which can be useful for functions
-        like {!filter}. *)
+        Exisential keys allow to compare keys. This can be useful for
+        functions like {!filter}. *)
 
     type t
     (** The type for existential keys. *)
 
     val hide_type : 'a key -> t
-    (** [hide_type k] is an exisential key for [k]. *)
+    (** [hide_type k] is an existential key for [k]. *)
 
     val equal : t -> t -> bool
     (** [equal k k'] is [true] iff [k] and [k'] are the same key. *)
@@ -195,8 +197,8 @@ module type S = sig
   (** [for_all p m] is [true] iff all bindings of [m] satisfy [p]. *)
 
   val exists : (binding -> bool) -> t -> bool
-  (** [exists p m] is [true] iff there exists a bindings of [m] satisfies
-      [p]. *)
+  (** [exists p m] is [true] iff there exists a bindings of [m] that
+      satisfies [p]. *)
 
   val filter : (binding -> bool) -> t -> t
   (** [filter p m] are the bindings of [m] that satisfy [p]. *)
