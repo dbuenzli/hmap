@@ -1,0 +1,7 @@
+description = "Heterogeneous value maps for OCaml"
+version = "%%VERSION%%"
+
+archive(byte) = "hmap.cma"
+archive(byte, plugin) = "hmap.cma"
+archive(native) = "hmap.cmxa"
+archive(native, plugin) = "hmap.cmxs"
