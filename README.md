@@ -10,7 +10,7 @@ safe manner.
 Hmap is distributed under the ISC license.
 
 Home page: http://erratique.ch/software/hmap  
-Contact: Daniel Bünzli <daniel.buenzl i@erratique.ch>
+Contact: Daniel Bünzli `<daniel.buenzl i@erratique.ch>`
 
 ## Installation
 
