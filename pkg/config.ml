@@ -5,7 +5,7 @@
 module Config = struct
   include Config_default
   let vars =
-    [ "NAME", "Hmap";
+    [ "NAME", "hmap";
       "VERSION", Git.describe ~chop_v:true "master";
       "PKG_WWW", "http://erratique.ch/software/hmap" ]
 end

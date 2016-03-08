@@ -7,7 +7,7 @@ to values with arbitrary types. Keys witness the type of the value
 they are bound to which allows to add and lookup bindings in a type
 safe manner.
 
-Hmap is distributed under the ISC license.
+Hmap has no dependency and is distributed under the ISC license.
 
 Home page: http://erratique.ch/software/hmap  
 Contact: Daniel Bünzli `<daniel.buenzl i@erratique.ch>`
