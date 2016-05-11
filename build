@@ -14,8 +14,8 @@ action ()
         lib-byte)   $OCAMLBUILD hmap.cma ;;
         lib-native) $OCAMLBUILD hmap.cmxa ;;
         test|tests) $OCAMLBUILD test/tests.otarget ;;
-        doc)        shift; pkg-doc $* doc/dev-api.docdir ;;
-        api-doc)    shift; pkg-doc $* doc/api.docdir ;;
+        doc)        shift; topkg doc --dev $* ;;
+        api-doc)    shift; topkg doc $* ;;
         clean)      $OCAMLBUILD -clean ;;
         *)          $OCAMLBUILD $* ;;
     esac
