@@ -1,12 +1,12 @@
 (*---------------------------------------------------------------------------
    Copyright (c) 2016 Daniel C. Bünzli. All rights reserved.
    Distributed under the ISC license, see terms at the end of the file.
-   %%NAME%% v%%VERSION%%
+   %%NAME%% %%VERSION%%
   ---------------------------------------------------------------------------*)
 
 (** Heterogeneous value maps.
 
-    {e v%%VERSION%% - {{:%%PKG_WWW%% }homepage}} *)
+    {e %%VERSION%% - {{:%%PKG_HOMEPAGE%% }homepage}} *)
 
 (** {1:keys Keys} *)
 
