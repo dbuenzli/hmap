@@ -18,7 +18,7 @@ let test () =
   assert (Hmap.get sk m = "hey");
   assert (Hmap.find uk m = None);
   assert (try Hmap.get uk m; false with Invalid_argument _ -> true);
-  Printf.printf "Success!%!";
+  Printf.printf "Success!\n%!";
   ()
 
 let () = test ()

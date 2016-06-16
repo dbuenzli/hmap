@@ -5,4 +5,5 @@ open Topkg
 
 let () =
   Pkg.describe "hmap" @@ fun c ->
-  Ok [ Pkg.mllib "src/hmap.mllib" ]
+  Ok [ Pkg.mllib "src/hmap.mllib";
+       Pkg.test "test/test"; ]

@@ -13,7 +13,7 @@ action ()
         default)    action lib-native ;;
         lib-byte)   $OCAMLBUILD hmap.cma ;;
         lib-native) $OCAMLBUILD hmap.cmxa ;;
-        test|tests) $OCAMLBUILD test/tests.otarget ;;
+        test|tests) topkg build && topkg test $* ;;
         doc)        shift; topkg doc --dev $* ;;
         api-doc)    shift; topkg doc $* ;;
         clean)      $OCAMLBUILD -clean ;;
