@@ -101,6 +101,19 @@ val get_any_binding : t -> binding
 
     @raise Invalid_argument if [m] is empty. *)
 
+type mapper = { map: 'a. 'a key -> 'a -> 'a }
+(** The type for map operation. *)
+
+val map : mapper -> t -> t
+(** [map f m] applies [f.map] to all bindings of [m]. *)
+
+type merger = { merge: 'a. 'a key -> 'a option -> 'a option -> 'a option }
+(** The type for merge operation. *)
+
+val merge : merger -> t -> t -> t
+(** [merge f a b] applies [f.merge] to all pair of (optional)
+    bindings in [a] and [b]. *)
+
 (** {1:func Functorial interface}
 
     The functorial interface allows to associate more information to the
@@ -213,6 +226,20 @@ module type S = sig
   (** [get_any_binding m] is a binding of [m].
 
       @raise Invalid_argument if [m] is empty. *)
+
+  type mapper = { map: 'a. 'a key -> 'a -> 'a }
+  (** The type for map operation. *)
+
+  val map : mapper -> t -> t
+  (** [map f m] applies [f.map] to all bindings of [m]. *)
+
+  type merger = { merge: 'a. 'a key -> 'a option -> 'a option -> 'a option }
+  (** The type for merge operation. *)
+
+  val merge : merger -> t -> t -> t
+  (** [merge f a b] applies [f.merge] to all pair of (optional)
+      bindings in [a] and [b]. *)
+
 end
 
 (** Functor for heterogeneous maps whose keys hold information
