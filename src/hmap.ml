@@ -73,6 +73,13 @@ module type S = sig
   val cardinal : t -> int
   val any_binding : t -> binding option
   val get_any_binding : t -> binding
+
+  type mapper = { map: 'a. 'a key -> 'a -> 'a }
+  val map : mapper -> t -> t
+
+  type merger = { merge: 'a. 'a key -> 'a option -> 'a option -> 'a option }
+  val merge : merger -> t -> t -> t
+
 end
 
 
@@ -138,9 +145,41 @@ with type 'a Key.info = 'a Key_info.t = struct
   let cardinal m = M.cardinal m
   let any_binding m = try Some (snd (M.choose m)) with
   | Not_found -> None
-
   let get_any_binding m = try snd (M.choose m) with
   | Not_found -> invalid_arg "empty map"
+
+  type mapper = { map: 'a. 'a key -> 'a -> 'a }
+
+  let map f a =
+    M.mapi
+      (fun (Key.V k) (B(k',v) as b) ->
+         match eq k.Key.tid k'.Key.tid with
+         | None -> b
+         | Some Teq -> B(k', f.map k' v)
+      ) a
+
+  type merger = { merge: 'a. 'a key -> 'a option -> 'a option -> 'a option }
+
+  let merge f a b =
+    let do_merge : type a b.
+      a key -> a option -> b key -> b option -> binding option =
+      fun k v k' v' ->
+        match eq k.Key.tid k'.Key.tid with
+        | None -> None
+        | Some Teq ->
+            match f.merge k v v' with
+            | None -> None
+            | Some r -> Some (B(k,r))
+    in
+    M.merge
+      (fun (Key.V k) ua ub ->
+         match ua, ub with
+         | None, None -> None
+         | Some(B(ka,va)), None -> do_merge ka (Some va) ka None
+         | None, Some(B(kb,vb)) -> do_merge kb None kb (Some vb)
+         | Some(B(ka,va)), Some(B(kb,vb)) -> do_merge ka (Some va) kb (Some vb)
+      ) a b
+
 end
 
 include Make (struct type 'a t = unit end)
