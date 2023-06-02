@@ -33,6 +33,11 @@ let eq : type r s. r tid -> s tid -> (r, s) teq option =
     | S.Tid -> Some Teq
     | _ -> None
 
+(* Unique integer associated with a type identifier.
+   See [Type.Id.uid] in the OCaml standard library. *)
+let[@inline] uid (type a) ((module A) : a tid) =
+  Obj.Extension_constructor.id (Obj.Extension_constructor.of_val A.Tid)
+
 (* Heterogeneous maps *)
 
 module type KEY_INFO = sig
@@ -84,42 +89,38 @@ with type 'a Key.info = 'a Key_info.t = struct
   module Key = struct
 
     type 'a info = 'a Key_info.t
-    type 'a key = { uid : int; tid : 'a tid; info : 'a Key_info.t }
-
-    let uid =
-      let id = ref (-1) in
-      fun () -> incr id; !id
+    type 'a key = { tid : 'a tid; info : 'a Key_info.t }
 
     let create info =
-      let uid = uid () in
       let tid = tid () in
-      { uid; tid; info }
+      { tid; info }
 
     let info k = k.info
 
     type t = V : 'a key -> t
     let hide_type k = V k
-    let equal (V k0) (V k1) = (compare : int -> int -> int) k0.uid k1.uid = 0
-    let compare (V k0) (V k1) = (compare : int -> int -> int) k0.uid k1.uid
+    let equal (V k0) (V k1) = (compare : int -> int -> int) (uid k0.tid) (uid k1.tid) = 0
+    let compare (V k0) (V k1) = (compare : int -> int -> int) (uid k0.tid) (uid k1.tid)
   end
 
   type 'a key = 'a Key.key
 
   (* Maps *)
 
-  module M = Map.Make (Key)
+  module M = Map.Make (Int)
   type binding = B : 'a key * 'a -> binding
   type t = binding M.t
 
   let empty = M.empty
   let is_empty = M.is_empty
-  let mem k m = M.mem (Key.V k) m
-  let add k v m = M.add (Key.V k) (B (k, v)) m
-  let singleton k v = M.singleton (Key.V k) (B (k, v))
-  let rem k m = M.remove (Key.V k) m
+  let mem k m = M.mem (uid k.Key.tid) m
+  let add k v m = M.add (uid k.Key.tid) (B (k, v)) m
+  let singleton k v = M.singleton (uid k.Key.tid) (B (k, v))
+  let rem k m = M.remove (uid k.Key.tid) m
+
   let find : type a. a key -> t -> a option =
   fun k s ->
-    try match M.find (Key.V k) s with
+    try match M.find (uid k.Key.tid) s with
     | B (k', v) ->
         match eq k.Key.tid k'.Key.tid with
         | None -> None
