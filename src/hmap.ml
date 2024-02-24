@@ -97,7 +97,7 @@ with type 'a Key.info = 'a Key_info.t = struct
 
     let info k = k.info
 
-    type t = V : 'a key -> t
+    type t = V : 'a key -> t [@@unboxed]
     let hide_type k = V k
     let equal (V k0) (V k1) = (compare : int -> int -> int) k0.uid k1.uid = 0
     let compare (V k0) (V k1) = (compare : int -> int -> int) k0.uid k1.uid
